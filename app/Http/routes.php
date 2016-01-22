@@ -35,3 +35,4 @@ Route::get('input', function(){
 
 Route::get('array_search', 'SearchController@getArrSearch');
 Route::get('get_result', 'SearchController@getResult');
+Route::post('get_item', 'SearchController@getItem');

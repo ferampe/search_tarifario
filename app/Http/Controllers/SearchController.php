@@ -136,6 +136,17 @@ class SearchController extends Controller {
 
 	}
 
+	public function getItem(Request $request){
+
+	
+		$service = Service::on()->join('countries', 'services.country_id', '=', 'countries.id')->join('destinations', 'destinations.id', '=', 'services.destination_id')->join('categories_services', 'services.category_service_id', '=', 'categories_services.id')->join('providers', 'services.provider_id', '=', 'providers.id')->where('services.id', '=', $request->input('id'));
+
+
+		$service = $service->orderBy('countries.name', 'ASC')->orderBy('destinations.name', 'ASC')->orderBy('categories_services.name', 'ASC')->orderBy('providers.name', 'ASC')->orderBy('services.name', 'ASC')->first(['services.id','countries.name as name_country', 'destinations.name as name_destination', 'categories_services.name as name_category', 'providers.name as name_provider', 'services.name as name_service']);
+
+		return view('parts.item', ['service' => $service])->render();
+	}
+
 	public function getResult(Request $request){
 
 		//dd($request->input('tags'));
@@ -169,13 +180,10 @@ class SearchController extends Controller {
 		}, $arrCategoryService);
 
 
-	
-
 		$countries = array_keys(array_intersect($arrCountries, $arrQuery));
 		$destinations = array_keys(array_intersect($arrDestinations, $arrQuery));
 		$providers = array_keys(array_intersect($arrProviders, $arrQuery));
 		$categoriesServices = array_keys(array_intersect($arrCategoryService, $arrQuery));
-
 
 
 		
